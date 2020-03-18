@@ -49,7 +49,7 @@ const App: () => React$Node = () => {
         </TouchableOpacity>
       </View>
       <View>
-        <Post />
+        <Posts />
       </View>
     </View>
   );
