@@ -1,30 +1,56 @@
-import React from 'react';
+import React, {Component, useState} from 'react';
 import {
-  StyleSheet,
-  Button,
-  TextInput,
-  View,
+  Image,
   Text,
+  StyleSheet,
+  View,
+  TextInput,
+  Button,
+  StatusBar,
+  SafeAreaView,
   TouchableOpacity,
+  Dimensions,
+  default as Alert,
 } from 'react-native';
+import {
+  Header,
+  LearnMoreLinks,
+  Colors,
+  DebugInstructions,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
+import ImagePicker from 'react-native-image-picker';
+import {base, firebaseConfig} from './configFirebase';
+import Firebase from 'firebase';
 import {Formik} from 'formik';
-import {updatePost} from './api/PostsApi';
 import {styles} from './PostList';
+import {addPost} from './api/PostsApi';
 
-export default function EditForm({route}) {
-  const post = route.params;
-  console.log(post);
+export default function AddForm() {
+  // const imagePicker = ({image, onImagePicked}) => {
+  //   return (
+  //       <View style={formikstyles.container}>
+  //         <View style={formikstyles.imageContainer}>
+  //           <Image source={} />
+  //         </View>
+  //         <View>
+  //           <Button title='Pick Image' onPress={this.pickImageHandler} />
+  //         </View>
+  //       </View>
+  //   )
+  // }
   return (
     <View style={styles.container}>
       <Formik
         initialValues={{
-          heading: post.heading,
-          description: post.description,
-          location: post.location,
+          heading: '',
+          description: '',
+          location: '',
         }}
         onSubmit={values => {
           console.log(values);
-          updatePost({
+          addPost({
+            key: Math.random(),
             heading: values.heading,
             description: values.description,
             location: values.location,
@@ -62,12 +88,11 @@ export default function EditForm({route}) {
     </View>
   );
 }
-
 const formikstyles = StyleSheet.create({
   txtInput: {
     margin: 5,
     padding: 30,
-    fontSize: 15,
+    fontSize: 25,
     borderWidth: 2,
     color: 'red',
     borderRadius: 5,

@@ -1,162 +1,90 @@
 import React, {Component} from 'react';
 import {
-  ActivityIndicator,
   FlatList,
   StyleSheet,
-  Text,
   View,
+  Text,
+  Modal,
+  TouchableOpacity,
 } from 'react-native';
 import Post from './Post';
-import PostForm from './PostForm';
-import firebase, {database} from 'firebase';
-import 'firebase/firestore';
-import _ from 'lodash';
-import {grabPosts} from './api/PostsApi';
+import Firebase from 'firebase';
+import 'firebase/database';
+import {firebaseConfig} from './configFirebase';
+import PostDetails from './stack/PostDetails';
 
 export default class Posts extends Component {
   constructor(props) {
     super(props);
+    !Firebase.apps.length
+      ? Firebase.initializeApp(firebaseConfig.firebase)
+      : Firebase.app();
+
     this.state = {
-      arrayHolder: [],
-      heading: '',
-      description: '',
-      location: '',
+      postList: [],
     };
-    // this.posts = [
-    //   {
-    //     heading: 'sandwiches',
-    //     description:
-    //       'Ham, cheese and tuna sandwiches leftover from the careers function.',
-    //     location: 'Arundel',
-    //   },
-    //   {
-    //     heading: 'pizza',
-    //     description: "Cancer research event didn't eat all their Dominoes",
-    //     location: 'Careers Connect',
-    //   },
-    // ];
   }
   state = {
     loading: false,
     currentPost: null,
-    postList: [],
   };
-
-  onPostsReceived = postList => {
-    console.log(postList);
-    this.setState(prevState => ({
-      postList: (prevState.postList = postList),
-    }));
-  };
-
-  componentWillMount() {
-    // Initialize Firebase
-    const firebaseConfig = {
-      apiKey: 'AIzaSyBkUl4xLIrmxDgZwN51X0HmAZOOD-cAKkM',
-      authDomain: 'big-appetite-96416.firebaseapp.com',
-      databaseURL: 'https://big-appetite-96416.firebaseio.com',
-      projectId: 'big-appetite-96416',
-      storageBucket: 'big-appetite-96416.appspot.com',
-      messagingSenderId: '302949475610',
-      appId: '1:302949475610:web:ce87017adfc56e137938a3',
-      measurementId: 'G-PGWQBWZ4FV',
-    };
-
-    // !firebase.apps.length
-    //   ? firebase.initializeApp(firebaseConfig)
-    //   : firebase.app();
-    //
-    // console.log(firebase.name);
-    // console.log(firebase.database());
-    //
-    // try {
-    //   firebase.initializeApp({
-    //     databaseURL: 'https://big-appetite-96416.firebaseio.com',
-    //   });
-    // } catch (err) {
-    //   if (!/alreadyexists/.test(err.message)) {
-    //     console.error('Firebase initialisation error', err.stack);
-    //   }
-    // }
-
-    firebase
-      .database()
-      .ref('posts/001')
-      .set({
-        heading: 'sandwiches',
-        description:
-          'Ham, cheese and tuna sandwiches leftover from the careers function.',
-        location: 'Arundel',
-      })
-      .then(() => {
-        console.log('INSERTED !');
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-    firebase
-      .database()
-      .ref('posts')
-      .on('value', data => {
-        console.log(data.toJSON());
-      });
-
-    setTimeout(() => {
-      firebase
-        .database()
-        .ref('posts/002')
-        .set({
-          heading: 'pizza',
-          description: "Cancer research event didn't eat all their Dominoes",
-          location: 'Careers Connect',
-        })
-        .then(() => {
-          console.log('INSERTED !');
-        })
-        .catch(error => {
-          console.log(error);
-        });
-    }, 5000);
-  }
 
   componentDidMount() {
-    // getPosts(this.onPostsReceived()).then(r => r);
-    grabPosts(this.onPostsReceived);
+    this.getPostData();
   }
 
-  renderItem({doc}) {
-    return (
-      <Post
-        key={doc.key}
-        heading={doc.data().heading}
-        description={doc.data().description}
-        location={doc.data().location}
-      />
-    );
-  }
+  getPostData = () => {
+    const ref = Firebase.database().ref('/posts');
+    ref.on('value', snapshot => {
+      console.log('DATA RETRIEVED');
+      const postsObject = snapshot.val();
+      if (!postsObject) {
+        return console.warn('No data from firebase');
+      }
+      const postsArray = Object.values(postsObject);
+      this.setState({postList: postsArray});
+    });
+  };
 
   render() {
-    if (this.state.loading) {
-      return (
-        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
-          <ActivityIndicator size={'large'} color={'dodgerblue'} />
-        </View>
-      );
-    }
     return (
       <View style={styles.container}>
         <FlatList
-          keyExtractor={doc => doc.id}
+          keyExtractor={post => post.heading}
           data={this.state.postList}
-          renderItem={this.renderItem}
+          renderItem={({item: post}) => (
+            <Post
+              key={post.heading}
+              heading={post.heading}
+              description={post.description}
+              location={post.location}
+              onPress={() =>
+                this.props.navigation.navigate('PostDetails', post)
+              }
+            />
+          )}
         />
       </View>
     );
   }
 }
 
-const styles = StyleSheet.create({
+// export default ({navigation}) => (
+//   <FlatList
+//   data={this.state.postList}
+//   keyExtractor={post => post.heading}
+//   renderItem={({item: post}) => (
+//       <Post
+//           key={post.heading}
+//           heading={post.heading}
+//           description={post.description}
+//           location={post.location}
+//           onPress={() => navigation.push('PostDetails', {post})}
+//       />
+//   )} />
+// )
+
+export const styles = StyleSheet.create({
   container: {
     borderWidth: 2,
     borderRadius: 5,

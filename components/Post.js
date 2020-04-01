@@ -8,31 +8,34 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import FavouriteButton from '../components/FavouriteButton';
+import FavouriteButton from './buttons/FavouriteButton';
 import chickenClub from './images/chickenSandwich.jpg';
 
-const Post = ({heading, description, location, username}) => (
-  <View style={postStyle.container}>
+const Post = ({heading, description, location, username, onPress}) => (
+  <TouchableOpacity style={postStyle.container} onPress={onPress}>
     <View style={(postStyle.container, {alignItems: 'flex-start'})}>
       <View style={postStyle.padding}>
         <Image style={postStyle.image} source={chickenClub} />
-
-        <Text>{heading}*heading*</Text>
-        <Text>{location}*location*</Text>
-        <Text>{username}*username*</Text>
+        <View style={{backgroundColor: (255, 255, 255, 45), borderRadius: 6}}>
+          <Text style={postStyle.text}>{heading}</Text>
+          <Text style={postStyle.text}>{location}</Text>
+          <Text style={postStyle.text}>{username}*username*</Text>
+        </View>
       </View>
 
       <View
         style={{
           alignSelf: 'flex-end',
-          flexDirection: 'row',
+          flexDirection: 'column',
           backgroundColor: '#2bb76e',
         }}>
-        <Text style={postStyle.paragraph}>{description}*description*</Text>
-        <FavouriteButton />
+        <Text style={postStyle.paragraph}>{description}</Text>
+        <View style={{justifyContent: 'flex-start', alignItems: 'flex-end'}}>
+          <FavouriteButton />
+        </View>
       </View>
     </View>
-  </View>
+  </TouchableOpacity>
 );
 
 const postStyle = StyleSheet.create({
@@ -51,12 +54,17 @@ const postStyle = StyleSheet.create({
   },
   paragraph: {
     alignSelf: 'flex-end',
+    fontSize: 20,
   },
   username: {},
   image: {
     flexDirection: 'row',
     height: 150,
     width: 150,
+  },
+  text: {
+    fontSize: 25,
+    padding: 5,
   },
 });
 export default Post;

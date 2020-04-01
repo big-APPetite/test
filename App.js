@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React, {useState} from 'react';
 import {
   SafeAreaView,
@@ -8,6 +9,7 @@ import {
   StatusBar,
   Modal,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 
 import {
@@ -20,38 +22,51 @@ import {
 import Posts from './components/PostList';
 import PostForm from './components/PostForm';
 import Post from './components/Post';
-import EditForm from './components/EditForm';
+import Favourites from './components/Favourites';
+import UserPage from './components/UserPage';
+import Map from './components/Maps';
+import AddForm from './components/AddForm';
+import {NavigationContainer} from '@react-navigation/native';
+import HomeStackScreen from './components/stack/HomeStack';
 
 const App: () => React$Node = () => {
   const [addModalOpen, setAddModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [userModalOpen, setUserModalOpen] = useState(false);
+  const [favModalOpen, setFavModalOpen] = useState(false);
   return (
-    <View>
-      <View style={{flexDirection: 'row'}}>
+    <NavigationContainer>
+      <View style={{flexDirection: 'row', backgroundColor: '#2bb76e'}}>
         <Modal visible={addModalOpen}>
           <View>
-            <PostForm />
+            <AddForm />
           </View>
           <Text onPress={() => setAddModalOpen(false)}>Close</Text>
         </Modal>
-        <Modal visible={editModalOpen}>
+        <Modal visible={favModalOpen}>
           <View>
-            <EditForm />
+            <Favourites />
           </View>
-          <Text onPress={() => setAddModalOpen(false)}>Close</Text>
+          <Text onPress={() => setFavModalOpen(false)}>Close</Text>
+        </Modal>
+        <Modal visible={userModalOpen}>
+          <View>
+            <UserPage />
+          </View>
+          <Text onPress={() => setUserModalOpen(false)}>Close</Text>
         </Modal>
 
         <TouchableOpacity onPress={() => setAddModalOpen(true)}>
           <Text style={styles.sectionDescription}>Add</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setEditModalOpen(true)}>
-          <Text style={styles.sectionDescription}>Edit</Text>
+        <TouchableOpacity onPress={() => setFavModalOpen(true)}>
+          <Text style={styles.sectionDescription}>Favourites</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => setUserModalOpen(true)}>
+          <Text style={styles.sectionDescription}>My Page</Text>
         </TouchableOpacity>
       </View>
-      <View>
-        <Posts />
-      </View>
-    </View>
+      <HomeStackScreen />
+    </NavigationContainer>
   );
 };
 

@@ -284,10 +284,10 @@ export default class PostForm extends Component {
               </Text>
               <View style={styles.ImageSections}>
                 <View>{this.renderFileData()}</View>
-                {/*<View>*/}
-                {/*  {this.renderFileUri()}*/}
-                {/*  <Text style={{textAlign: 'center'}}>File Uri</Text>*/}
-                {/*</View>*/}
+                <View>
+                  {this.renderFileUri()}
+                  <Text style={{textAlign: 'center'}}>File Uri</Text>
+                </View>
               </View>
 
               <View style={styles.btnParentSection}>
@@ -297,19 +297,19 @@ export default class PostForm extends Component {
                   <Text style={styles.btnText}>Choose Photo</Text>
                 </TouchableOpacity>
 
-                {/*<TouchableOpacity*/}
-                {/*  onPress={this.launchCamera}*/}
-                {/*  style={styles.btnSection}>*/}
-                {/*  <Text style={styles.btnText}>Directly Launch Camera</Text>*/}
-                {/*</TouchableOpacity>*/}
+                <TouchableOpacity
+                  onPress={this.launchCamera}
+                  style={styles.btnSection}>
+                  <Text style={styles.btnText}>Directly Launch Camera</Text>
+                </TouchableOpacity>
 
-                {/*<TouchableOpacity*/}
-                {/*  onPress={this.launchImageLibrary}*/}
-                {/*  style={styles.btnSection}>*/}
-                {/*  <Text style={styles.btnText}>*/}
-                {/*    Directly Launch Image Library*/}
-                {/*  </Text>*/}
-                {/*</TouchableOpacity>*/}
+                <TouchableOpacity
+                  onPress={this.launchImageLibrary}
+                  style={styles.btnSection}>
+                  <Text style={styles.btnText}>
+                    Directly Launch Image Library
+                  </Text>
+                </TouchableOpacity>
               </View>
             </View>
           </SafeAreaView>
@@ -328,7 +328,8 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 20,
     borderWidth: 2,
-    fontSize: 20,
+    fontSize: 100,
+    color: 'black',
     borderRadius: 5,
     backgroundColor: (255, 250, 250, 50),
   },

@@ -1,65 +1,128 @@
-import firebase from 'firebase';
+import Firebase from 'firebase';
 import 'firebase/firestore';
+import 'firebase/database';
 import React from 'react';
-import _ from 'lodash';
-import Post from '../Post';
+import post from 're-base/src/lib/post';
 
-const db = firebase.firestore();
-
-export function addPost(post, addComplete) {
-  firebase
-    .database()
+//need to add createdBy field to store post creator's id
+export function addPost(values, addComplete) {
+  Firebase.database()
     .ref('posts')
     .push({
-      heading: post.heading,
-      description: post.description,
-      createdAt: firebase.database.FieldValue.serverTimestamp(),
+      heading: values.heading,
+      description: values.description,
+      location: values.location,
+      // createdAt: Firebase.database.FieldValue.serverTimestamp(),
     })
     .then(data => addComplete(data))
     .catch(error => console.log(error));
 }
 
-export async function getPosts(postsRetrieved) {
-  const postList = [];
-  let snapshot = await firebase
-    .database()
+export function getPostData() {
+  const ref = Firebase.database().ref('/posts');
+  ref.on('value', snapshot => {
+    console.log('DATA RETRIEVED');
+    const postsObject = snapshot.val();
+    if (!postsObject) {
+      return console.warn('No data from firebase');
+    }
+    const postsArray = Object.values(postsObject);
+    this.setState({postList: postsArray});
+  });
+}
+export function updatePost(values, updateComplete) {
+  //values.updatedAt
+  const postKey = Firebase.database()
+    .ref()
+    .child('posts')
+    .push()
+    .getKey();
+
+  console.log(postKey);
+
+  const updates = {};
+  updates[postKey] = values;
+
+  return Firebase.database()
     .ref('posts')
-    .orderBy('createdAt')
-    .get();
+    .update(updates)
+    .then(() => updateComplete(updates))
+    .catch(error => console.log(error));
+}
+// export function updatePost(id, heading, description, location) {
+//   const values = {
+//     id: id,
+//     heading: heading,
+//     description: description,
+//     location: location,
+//   };
+//
+//   const newPostKey = Firebase.database()
+//     .ref()
+//     .child('posts')
+//     .push().key;
+//
+//   const updates = {};
+//   updates['/posts/' + newPostKey] = values;
+//   //updates['/user-posts/' + uid + '/' + newPostKey] = values;
+//
+//   return Firebase.database()
+//     .ref()
+//     .update(updates);
+// }
 
-  snapshot.forEach(doc => {
-    postList.push(doc.data());
-  });
+export function deletePost(id, heading, description, location) {
+  const postData = {
+    id: id,
+    heading: heading,
+    description: description,
+    location: location,
+  };
 
-  console.log(postList);
+  const postKey = Firebase.database()
+    .ref()
+    .child('posts')
+    .push().key;
 
-  postsRetrieved(postList);
+  const postToDelete = {};
+  postToDelete['/posts/' + postKey] = postData;
+  console.log(postData);
+
+  return Firebase.database()
+    .ref()
+    .remove(postToDelete);
 }
 
-export async function displayPosts(postsRetrieved) {
-  let postList = [];
-  const snapshot = await firebase
-    .firestore()
-    .collection('posts')
-    .orderBy('createdAt')
-    .get();
-
-  snapshot.forEach(doc => {
-    postList.push(doc.data());
-  });
-
-  postsRetrieved(postList);
+export function favourite() {
+  Firebase.database()
+    .ref('/posts')
+    .on('value', snapshot => {
+      const postsObject = snapshot.val();
+      Object.keys(postsObject).map((key, index) => {
+        const favouritePost = postsObject[key];
+      });
+    });
 }
-
-export function grabPosts(postsRetrieved) {
-  const postList = [];
-  db.collection('posts')
+//create new path (document) called favourites for each user to save their posts to
+export function getFavourites(postsRetrieved) {
+  db.collection('favourites')
+    .addFilter('user id')
     .get()
     .then(snapshot => {
       snapshot.docs.forEach(doc => {
         console.log(doc.data());
-        postList.push(doc.data());
+        //postList.push(doc.data());
       });
     });
-  postsRetrieved(postList);
+}
+
+export function getUserPosts(postsRetrieved) {
+  db.collection('posts')
+    .addFilter('user id')
+    .get()
+    .then(snapshot => {
+      snapshot.docs.forEach(doc => {
+        console.log(doc.data());
+      });
+    });
 }
