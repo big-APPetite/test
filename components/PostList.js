@@ -16,10 +16,6 @@ export default class Posts extends Component {
       postList: [],
     };
   }
-  state = {
-    loading: false,
-    currentPost: null,
-  };
 
   componentDidMount() {
     this.getPostData();
