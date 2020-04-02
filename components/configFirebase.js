@@ -1,6 +1,3 @@
-import * as firebase from 'firebase';
-import 'firebase/firestore';
-import Rebase from 're-base';
 import React from 'react';
 
 export const firebaseConfig = {
@@ -13,8 +10,3 @@ export const firebaseConfig = {
   appId: '1:302949475610:web:ce87017adfc56e137938a3',
   measurementId: 'G-PGWQBWZ4FV',
 };
-
-const app = firebase.initializeApp(firebaseConfig);
-const base = Rebase.createClass(app.database());
-
-export {base};
