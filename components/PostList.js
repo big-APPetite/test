@@ -1,17 +1,9 @@
 import React, {Component} from 'react';
-import {
-  FlatList,
-  StyleSheet,
-  View,
-  Text,
-  Modal,
-  TouchableOpacity,
-} from 'react-native';
+import {FlatList, StyleSheet, View} from 'react-native';
 import Post from './Post';
 import Firebase from 'firebase';
 import 'firebase/database';
 import {firebaseConfig} from './configFirebase';
-import PostDetails from './stack/PostDetails';
 
 export default class Posts extends Component {
   constructor(props) {
@@ -68,21 +60,6 @@ export default class Posts extends Component {
     );
   }
 }
-
-// export default ({navigation}) => (
-//   <FlatList
-//   data={this.state.postList}
-//   keyExtractor={post => post.heading}
-//   renderItem={({item: post}) => (
-//       <Post
-//           key={post.heading}
-//           heading={post.heading}
-//           description={post.description}
-//           location={post.location}
-//           onPress={() => navigation.push('PostDetails', {post})}
-//       />
-//   )} />
-// )
 
 export const styles = StyleSheet.create({
   container: {

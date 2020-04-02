@@ -8,12 +8,27 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Formik} from 'formik';
-import {updatePost} from './api/PostsApi';
 import {styles} from './PostList';
+import Firebase from 'firebase';
+import 'firebase/database';
 
 export default function EditForm({route}) {
   const post = route.params;
   console.log(post);
+
+  function updatePost(post, values) {
+    const ref = Firebase.database().ref('/posts');
+    ref.on('value', snapshot => {
+      console.log('DATA UPDATED');
+      const post = route.params;
+      const postsObject = snapshot.val();
+      const postsArray = Object.values(postsObject);
+      const postIndex = postsArray.indexOf(post);
+      console.log(postIndex);
+      postsArray[postIndex] = values;
+    });
+  }
+
   return (
     <View style={styles.container}>
       <Formik
@@ -22,7 +37,13 @@ export default function EditForm({route}) {
           description: post.description,
           location: post.location,
         }}
-        onSubmit={values => {
+        mapPropsToValues={post => ({
+          heading: post.heading,
+          description: post.description,
+          location: post.location,
+        })}
+        enableReinitialize={true}
+        onSubmit={(values, post) => {
           console.log(values);
           updatePost({
             heading: values.heading,

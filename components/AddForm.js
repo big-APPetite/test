@@ -1,44 +1,19 @@
-import React, {Component, useState} from 'react';
+import React, {Component} from 'react';
 import {
-  Image,
   Text,
   StyleSheet,
   View,
   TextInput,
   Button,
-  StatusBar,
-  SafeAreaView,
+  ScrollView,
   TouchableOpacity,
-  Dimensions,
-  default as Alert,
 } from 'react-native';
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import ImagePicker from 'react-native-image-picker';
-import {base, firebaseConfig} from './configFirebase';
-import Firebase from 'firebase';
 import {Formik} from 'formik';
 import {styles} from './PostList';
-import {addPost} from './api/PostsApi';
+import {addPost, uploadPost} from './api/PostsApi';
+import PostImage from './ImagePicker';
 
-export default function AddForm() {
-  // const imagePicker = ({image, onImagePicked}) => {
-  //   return (
-  //       <View style={formikstyles.container}>
-  //         <View style={formikstyles.imageContainer}>
-  //           <Image source={} />
-  //         </View>
-  //         <View>
-  //           <Button title='Pick Image' onPress={this.pickImageHandler} />
-  //         </View>
-  //       </View>
-  //   )
-  // }
+export default function AddForm(props) {
   return (
     <View style={styles.container}>
       <Formik
@@ -46,6 +21,7 @@ export default function AddForm() {
           heading: '',
           description: '',
           location: '',
+          imageUri: null,
         }}
         onSubmit={values => {
           console.log(values);
@@ -55,9 +31,13 @@ export default function AddForm() {
             description: values.description,
             location: values.location,
           });
+          uploadPost({
+            imageUri: '',
+          });
         }}>
         {props => (
-          <View>
+          <ScrollView>
+            <PostImage />
             <TextInput
               style={formikstyles.txtInput}
               placeholder={'Give your post a title'}
@@ -82,7 +62,7 @@ export default function AddForm() {
               onPress={props.handleSubmit}>
               <Text style={formikstyles.btnText}>Submit</Text>
             </TouchableOpacity>
-          </View>
+          </ScrollView>
         )}
       </Formik>
     </View>

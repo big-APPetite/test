@@ -1,11 +1,11 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Posts from '../PostList';
 import AddForm from '../AddForm';
 import PostDetails from './PostDetails';
 import {Button} from 'react-native';
 import EditForm from '../EditForm';
+import PostForm from '../PostForm';
 
 const HomeStack = createStackNavigator();
 
@@ -22,6 +22,16 @@ const HomeStackScreen = () => (
               title="Add"
               onPress={() => {
                 navigation.navigate('New Post');
+              }}
+            />
+          ),
+          headerLeft: () => (
+            <Button
+              title="Post"
+              onPress={() => {
+                navigation.navigate('Post Form', {
+                  post: route.params,
+                });
               }}
             />
           ),
@@ -49,6 +59,7 @@ const HomeStackScreen = () => (
     />
     <HomeStack.Screen name="New Post" component={AddForm} />
     <HomeStack.Screen name="Update Post" component={EditForm} />
+    <HomeStack.Screen name="Post Form" component={PostForm} />
   </HomeStack.Navigator>
 );
 

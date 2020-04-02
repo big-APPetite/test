@@ -1,13 +1,5 @@
-import React, {Component} from 'react';
-import {
-  Image,
-  Text,
-  StyleSheet,
-  View,
-  TextInput,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
+import React from 'react';
+import {Image, Text, StyleSheet, View, TouchableOpacity} from 'react-native';
 import FavouriteButton from './buttons/FavouriteButton';
 import chickenClub from './images/chickenSandwich.jpg';
 
