@@ -138,6 +138,10 @@ export default class PostImage extends Component {
       );
     }
   }
+  componentDidMount() {
+    const imageUri = this.state.fileUri;
+  }
+
   render() {
     return (
       <View>
@@ -186,6 +190,7 @@ export default class PostImage extends Component {
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   scrollView: {

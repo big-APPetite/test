@@ -12,28 +12,31 @@ import {Formik} from 'formik';
 import {styles} from './PostList';
 import {addPost, uploadPost} from './api/PostsApi';
 import PostImage from './ImagePicker';
+import {imageUri} from './ImagePicker';
+import key from './api/PostsApi';
 
 export default function AddForm(props) {
   return (
     <View style={styles.container}>
       <Formik
         initialValues={{
+          // id: '',
           heading: '',
           description: '',
           location: '',
-          imageUri: null,
+          // imageUri: null,
         }}
         onSubmit={values => {
           console.log(values);
           addPost({
-            key: Math.random(),
             heading: values.heading,
             description: values.description,
             location: values.location,
+            // imageUri: imageUri,
           });
-          uploadPost({
-            imageUri: '',
-          });
+          // uploadPost({
+          //   imageUri: '',
+          // });
         }}>
         {props => (
           <ScrollView>

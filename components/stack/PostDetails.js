@@ -1,10 +1,18 @@
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {Text, View, StyleSheet, Button, Alert} from 'react-native';
+import Firebase from 'firebase';
 
 export default ({route}) => {
   const postInfo = route.params;
-  const postsArray = Object.values(postInfo);
+  const postKey = postInfo.id;
   console.log(postInfo);
+  const ref = Firebase.database().ref('posts/' + postKey);
+  function deletePost(values) {
+    ref.remove().then(snapshot => {
+      values.Id = snapshot.Id;
+      snapshot.set(values);
+    });
+  }
 
   return (
     <View>
@@ -14,6 +22,18 @@ export default ({route}) => {
       <Text style={{fontSize: 25, textAlign: 'center'}}>
         {postInfo.description}
       </Text>
+      <Button
+        title="Delete"
+        onPress={() => {
+          Alert.alert('Delete', 'Are you sure you want to delete this post?', [
+            {text: 'Yes', onPress: () => deletePost()},
+            {
+              text: 'Cancel',
+              onPress: () => console.log('delete post cancelled'),
+            },
+          ]);
+        }}
+      />
     </View>
   );
 };

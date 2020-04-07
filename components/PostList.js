@@ -8,8 +8,9 @@ import {firebaseConfig} from './configFirebase';
 export default class Posts extends Component {
   constructor(props) {
     super(props);
+
     !Firebase.apps.length
-      ? Firebase.initializeApp(firebaseConfig.firebase)
+      ? Firebase.initializeApp(firebaseConfig)
       : Firebase.app();
 
     this.state = {

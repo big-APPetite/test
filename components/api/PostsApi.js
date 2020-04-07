@@ -7,16 +7,21 @@ import uuid4 from 'uuid/v4';
 
 //need to add createdBy field to store post creator's id
 export function addPost(values, addComplete) {
-  Firebase.database()
+  const key = Firebase.database()
     .ref('posts')
-    .push({
+    .push().key;
+  return Firebase.database()
+    .ref('posts/' + key)
+    .set({
+      id: key,
       heading: values.heading,
       description: values.description,
       location: values.location,
+      // imageUri: this.state.fileUri,
       // createdAt: Firebase.database.FieldValue.serverTimestamp(),
     })
     .then(snapshot => {
-      values.id = snapshot.id;
+      values.Id = snapshot.Id;
       snapshot.set(values);
     })
     .then(() => addComplete(values))
@@ -35,8 +40,7 @@ export function uploadPost(post, onPostUploaded, {updating}) {
     const storageRef = Firebase.storage().ref('posts.images/${fileName}');
     storageRef
       .putFile(post.imageUri)
-      .on(Firebase.storage.TaskEvent.STATE_CHANGED,
-          snapshot => {
+      .on(Firebase.storage.TaskEvent.STATE_CHANGED, snapshot => {
         console.log('snapshot: ' + snapshot.state);
         console.log(
           'progress: ' +

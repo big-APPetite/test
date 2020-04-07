@@ -14,19 +14,22 @@ import 'firebase/database';
 
 export default function EditForm({route}) {
   const post = route.params;
+  const postKey = post.post.id;
   console.log(post);
+  console.log(postKey);
+  const ref = Firebase.database().ref('posts/' + postKey);
 
-  function updatePost(post, values) {
-    const ref = Firebase.database().ref('/posts');
-    ref.on('value', snapshot => {
-      console.log('DATA UPDATED');
-      const post = route.params;
-      const postsObject = snapshot.val();
-      const postsArray = Object.values(postsObject);
-      const postIndex = postsArray.indexOf(post);
-      console.log(postIndex);
-      postsArray[postIndex] = values;
-    });
+  function updatePost(values) {
+    ref
+      .update({
+        heading: values.heading,
+        description: values.description,
+        location: values.location,
+      })
+      .then(snapshot => {
+        values.id = snapshot.id;
+        snapshot.set(values);
+      });
   }
 
   return (
