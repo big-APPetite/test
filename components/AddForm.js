@@ -12,64 +12,74 @@ import {Formik} from 'formik';
 import {styles} from './PostList';
 import {addPost, uploadPost} from './api/PostsApi';
 import PostImage from './ImagePicker';
-import {imageUri} from './ImagePicker';
-import key from './api/PostsApi';
 
-export default function AddForm(props) {
-  return (
-    <View style={styles.container}>
-      <Formik
-        initialValues={{
-          // id: '',
-          heading: '',
-          description: '',
-          location: '',
-          // imageUri: null,
-        }}
-        onSubmit={values => {
-          console.log(values);
-          addPost({
-            heading: values.heading,
-            description: values.description,
-            location: values.location,
-            // imageUri: imageUri,
-          });
-          // uploadPost({
-          //   imageUri: '',
-          // });
-        }}>
-        {props => (
-          <ScrollView>
-            <PostImage />
-            <TextInput
-              style={formikstyles.txtInput}
-              placeholder={'Give your post a title'}
-              onChangeText={props.handleChange('heading')}
-              value={props.values.heading}
-            />
-            <TextInput
-              style={formikstyles.txtInput}
-              placeholder={'Tell us about your leftovers...'}
-              onChangeText={props.handleChange('description')}
-              value={props.values.description}
-            />
-            <TextInput
-              style={formikstyles.txtInput}
-              placeholder={'Where can we get our grub?'}
-              onChangeText={props.handleChange('location')}
-              value={props.values.location}
-            />
-            <TouchableOpacity
-              style={formikstyles.button}
-              title={'submit'}
-              onPress={props.handleSubmit}>
-              <Text style={formikstyles.btnText}>Submit</Text>
-            </TouchableOpacity>
-          </ScrollView>
-        )}
-      </Formik>
-    </View>
-  );
+export default class AddForm extends Component {
+  // constructor(props) {
+  //   super(props);
+  //
+  //   this.state = {
+  //     Obj: new PostImage(),
+  //   };
+  // }
+  //
+  // callFunctionUpload() {
+  //   this.Obj.uploadPhoto();
+  // }
+  render() {
+    return (
+      <View style={styles.container}>
+        <Formik
+          initialValues={{
+            heading: '',
+            description: '',
+            location: '',
+            image: null,
+            imageUri: '',
+          }}
+          onSubmit={values => {
+            console.log(values);
+            addPost({
+              heading: values.heading,
+              description: values.description,
+              location: values.location,
+            });
+            // uploadPhoto({
+            //   image: values.image,
+            // });
+          }}>
+          {props => (
+            <ScrollView>
+              <PostImage />
+              <TextInput
+                style={formikstyles.txtInput}
+                placeholder={'Give your post a title'}
+                onChangeText={props.handleChange('heading')}
+                value={props.values.heading}
+              />
+              <TextInput
+                style={formikstyles.txtInput}
+                placeholder={'Tell us about your leftovers...'}
+                onChangeText={props.handleChange('description')}
+                value={props.values.description}
+              />
+              <TextInput
+                style={formikstyles.txtInput}
+                placeholder={'Where can we get our grub?'}
+                onChangeText={props.handleChange('location')}
+                value={props.values.location}
+              />
+              <TouchableOpacity
+                style={formikstyles.button}
+                title={'submit'}
+                onPress={props.handleSubmit}>
+                <Text style={formikstyles.btnText}>Submit</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          )}
+        </Formik>
+      </View>
+    );
+  }
 }
 const formikstyles = StyleSheet.create({
   txtInput: {

@@ -3,7 +3,8 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import Post from './Post';
 import Firebase from 'firebase';
 import 'firebase/database';
-import {firebaseConfig} from './configFirebase';
+import {firebaseConfig} from './api/configFirebase';
+import FavouriteButton from './buttons/FavouriteButton';
 
 export default class Posts extends Component {
   constructor(props) {
@@ -47,6 +48,7 @@ export default class Posts extends Component {
               heading={post.heading}
               description={post.description}
               location={post.location}
+              image={post.image && {uri: post.image}}
               onPress={() =>
                 this.props.navigation.navigate('PostDetails', post)
               }

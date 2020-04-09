@@ -5,7 +5,7 @@ import AddForm from '../AddForm';
 import PostDetails from './PostDetails';
 import {Button} from 'react-native';
 import EditForm from '../EditForm';
-import PostForm from '../PostForm';
+import Favourites from './FavouritesScreen';
 
 const HomeStack = createStackNavigator();
 
@@ -27,11 +27,9 @@ const HomeStackScreen = () => (
           ),
           headerLeft: () => (
             <Button
-              title="Post"
+              title="Favourites"
               onPress={() => {
-                navigation.navigate('Post Form', {
-                  post: route.params,
-                });
+                navigation.navigate('Favourites');
               }}
             />
           ),
@@ -59,7 +57,7 @@ const HomeStackScreen = () => (
     />
     <HomeStack.Screen name="New Post" component={AddForm} />
     <HomeStack.Screen name="Update Post" component={EditForm} />
-    <HomeStack.Screen name="Post Form" component={PostForm} />
+    <HomeStack.Screen name="Favourites" component={Favourites} />
   </HomeStack.Navigator>
 );
 
