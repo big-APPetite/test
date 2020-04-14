@@ -133,7 +133,8 @@ const PostImage = ({image, onImagePicked}) => {
   function uploadPhoto(values, onPostUploaded) {
     if ({fileUri}) {
       console.log(fileUri);
-      const storageRef = Firebase.storage().ref('posts/images/' + fileName);
+      const storageRef = Firebase.storage().ref('posts/images/' + {fileName});
+      console.log(fileName);
       storageRef.put({fileUri}).on(
         Firebase.storage.TaskEvent.STATE_CHANGED,
         snapshot => {

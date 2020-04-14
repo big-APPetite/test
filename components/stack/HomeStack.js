@@ -6,11 +6,12 @@ import PostDetails from './PostDetails';
 import {Button} from 'react-native';
 import EditForm from '../EditForm';
 import Favourites from './FavouritesScreen';
+import {logOut} from '../api/UsersApi';
 
 const HomeStack = createStackNavigator();
 
 const HomeStackScreen = () => (
-  <HomeStack.Navigator>
+  <HomeStack.Navigator name="Home">
     <HomeStack.Screen
       name="PostList"
       component={Posts}
@@ -27,10 +28,12 @@ const HomeStackScreen = () => (
           ),
           headerLeft: () => (
             <Button
-              title="Favourites"
-              onPress={() => {
-                navigation.navigate('Favourites');
-              }}
+              // title="Favourites"
+              // onPress={() => {
+              //   navigation.navigate('Favourites');
+              // }}
+              title="Log Out"
+              onPress={logOut}
             />
           ),
         };

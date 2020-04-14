@@ -1,32 +1,15 @@
 import 'react-native-gesture-handler';
-import React, {useState} from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  Modal,
-  TouchableOpacity,
-  TextInput,
-} from 'react-native';
-
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import HomeStackScreen from './components/stack/HomeStack';
+import AuthNavigator from './components/stack/authNavigator';
 
 const App: () => React$Node = () => {
   return (
-    <NavigationContainer>
-      <HomeStackScreen />
-    </NavigationContainer>
+    // <NavigationContainer>
+    //   <HomeStackScreen />
+    // </NavigationContainer>
+    <AuthNavigator />
   );
 };
 

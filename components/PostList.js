@@ -3,8 +3,8 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import Post from './Post';
 import Firebase from 'firebase';
 import 'firebase/database';
+import 'firebase/auth';
 import {firebaseConfig} from './api/configFirebase';
-import FavouriteButton from './buttons/FavouriteButton';
 
 export default class Posts extends Component {
   constructor(props) {
@@ -35,6 +35,15 @@ export default class Posts extends Component {
       this.setState({postList: postsArray});
     });
   };
+
+  async logOut() {
+    try {
+      await Firebase.auth().signOut();
+    } catch (e) {
+      console.error(e);
+    }
+    console.log('User logged out successfully.');
+  }
 
   render() {
     return (

@@ -5,28 +5,38 @@ import 'firebase/storage';
 import 'firebase/auth';
 import React from 'react';
 
-//need to add createdBy field to store post creator's id
-export function addPost(values, addComplete) {
-  const key = Firebase.database()
-    .ref('posts')
-    .push().key;
-  return Firebase.database()
-    .ref('posts/' + key)
-    .set({
-      id: key,
-      heading: values.heading,
-      description: values.description,
-      location: values.location,
-      // imageUri: this.state.fileUri,
-      // createdAt: Firebase.database.FieldValue.serverTimestamp(),
-    })
-    .then(snapshot => {
-      values.Id = snapshot.Id;
-      snapshot.set(values);
-    })
-    .then(() => addComplete(values))
-    .catch(error => console.log(error));
-}
+// export function addPost(values, addComplete) {
+//   const userKey = Firebase.auth().currentUser.uid;
+//   const [username, setUsername] = useState('');
+//   Firebase.database()
+//     .ref('users/' + userKey)
+//     .once('value')
+//     .then(snapshot => {
+//       const userName = snapshot.val() && snapshot.val().username;
+//       setUsername(userName);
+//     });
+//   const key = Firebase.database()
+//     .ref('posts')
+//     .push().key;
+//   return Firebase.database()
+//     .ref('posts/' + key)
+//     .set({
+//       id: key,
+//       heading: values.heading,
+//       description: values.description,
+//       location: values.location,
+//       createdAt: Date(Date.now()),
+//       createdBy: username,
+//       // imageUri: this.state.fileUri,
+//       // createdAt: Firebase.database.FieldValue.serverTimestamp(),
+//     })
+//     .then(snapshot => {
+//       values.Id = snapshot.Id;
+//       snapshot.set(values);
+//     })
+//     .then(() => addComplete(values))
+//     .catch(error => console.log(error));
+// }
 
 // export function uploadPost(post, onPostUploaded, {updating}) {
 //   if (post.imageUri) {
@@ -93,28 +103,4 @@ export function getPostData() {
     const postsArray = Object.values(postsObject);
     this.setState({postList: postsArray});
   });
-}
-
-//create new path (document) called favourites for each user to save their posts to
-export function getFavourites(postsRetrieved) {
-  db.collection('favourites')
-    .addFilter('user id')
-    .get()
-    .then(snapshot => {
-      snapshot.docs.forEach(doc => {
-        console.log(doc.data());
-        //postList.push(doc.data());
-      });
-    });
-}
-
-export function getUserPosts(postsRetrieved) {
-  db.collection('posts')
-    .addFilter('user id')
-    .get()
-    .then(snapshot => {
-      snapshot.docs.forEach(doc => {
-        console.log(doc.data());
-      });
-    });
 }
