@@ -15,20 +15,18 @@ import Firebase from 'firebase';
 
 export default function AddForm() {
   const [selectedValue, setSelectedValue] = useState('');
-  const [username, setUsername] = useState('');
+  const [Username, setUsername] = useState('');
+  const userKey = Firebase.auth().currentUser.uid;
+  Firebase.database()
+    .ref('users/' + userKey)
+    .on('value', snapshot => {
+      const user = snapshot.val();
+      const userName = user.username;
+      setUsername(userName);
+      console.log(user);
+      console.log(userName);
+    });
   function addPost(values, addComplete) {
-    const userKey = Firebase.auth().currentUser.uid;
-    Firebase.database()
-      .ref('users/' + userKey + '/username')
-      .once('value')
-      .then(snapshot => {
-        const userName = snapshot.val() && snapshot.val().username;
-        setUsername(userName);
-      });
-    // .on('value', snapshot => {
-    //   const userName = snapshot.val();
-    //   setUsername(userName);
-    // });
     const key = Firebase.database()
       .ref('posts')
       .push().key;
@@ -40,9 +38,8 @@ export default function AddForm() {
         description: values.description,
         location: values.location,
         createdAt: Date(Date.now()),
-        createdBy: username,
+        createdBy: Username,
         // imageUri: this.state.fileUri,
-        // createdAt: Firebase.database.FieldValue.serverTimestamp(),
       })
       .then(snapshot => {
         values.Id = snapshot.Id;
@@ -64,12 +61,12 @@ export default function AddForm() {
         }}
         onSubmit={values => {
           console.log(values);
-          console.log(username);
+          console.log(Username);
           addPost({
             heading: values.heading,
             description: values.description,
             location: selectedValue,
-            createdBy: username,
+            createdBy: Username,
           });
           // uploadPhoto({
           //   image: values.image,
@@ -90,12 +87,6 @@ export default function AddForm() {
               onChangeText={props.handleChange('description')}
               value={props.values.description}
             />
-            {/*<TextInput*/}
-            {/*  style={formikstyles.txtInput}*/}
-            {/*  placeholder={'Where can we get our grub?'}*/}
-            {/*  onChangeText={props.handleChange('location')}*/}
-            {/*  value={props.values.location}*/}
-            {/*/>*/}
             <Text style={{fontSize: 25}}>Select Location:</Text>
             <Picker
               style={{fontSize: 25}}

@@ -5,6 +5,19 @@ import 'firebase/storage';
 import 'firebase/auth';
 import React from 'react';
 
+function getUsername() {
+  const userKey = Firebase.auth().currentUser.uid;
+  Firebase.database()
+    .ref('users/' + userKey)
+    .on('value', snapshot => {
+      const user = snapshot.val();
+      const userName = user.username;
+      this.setState({Username: userName});
+      console.log(user);
+      console.log(userName);
+    });
+}
+
 // export function addPost(values, addComplete) {
 //   const userKey = Firebase.auth().currentUser.uid;
 //   const [username, setUsername] = useState('');

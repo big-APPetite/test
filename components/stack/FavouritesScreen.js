@@ -16,8 +16,8 @@ export default class Favourites extends Component {
   }
 
   getFavourites = () => {
-    const uuid = Firebase.auth().currentUser;
-    const ref = Firebase.database().ref('favourites/' + uuid);
+    const userKey = Firebase.auth().currentUser.uid;
+    const ref = Firebase.database().ref('favourites/' + userKey);
     ref.on('value', snapshot => {
       console.log('Favourites retrieved!');
       const favObject = snapshot.val();
@@ -45,6 +45,7 @@ export default class Favourites extends Component {
               heading={post.heading}
               description={post.description}
               location={post.location}
+              createdBy={post.createdBy}
               image={post.image && {uri: post.image}}
             />
           )}

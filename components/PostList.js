@@ -57,6 +57,7 @@ export default class Posts extends Component {
               heading={post.heading}
               description={post.description}
               location={post.location}
+              createdBy={post.createdBy}
               image={post.image && {uri: post.image}}
               onPress={() =>
                 this.props.navigation.navigate('PostDetails', post)

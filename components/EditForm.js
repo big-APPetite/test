@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
-  Button,
+  Picker,
   TextInput,
   View,
   Text,
@@ -18,6 +18,9 @@ export default function EditForm({route}) {
   console.log(post);
   console.log(postKey);
   const ref = Firebase.database().ref('posts/' + postKey);
+  const [Heading, setHeading] = useState(post.post.heading);
+  const [Description, setDescription] = useState(post.post.description);
+  const [Location, setLocation] = useState(post.post.location);
 
   function updatePost(values) {
     ref
@@ -40,18 +43,18 @@ export default function EditForm({route}) {
           description: post.description,
           location: post.location,
         }}
-        mapPropsToValues={post => ({
-          heading: post.heading,
-          description: post.description,
-          location: post.location,
+        mapPropsToValues={() => ({
+          heading: Heading,
+          description: Description,
+          location: Location,
         })}
         enableReinitialize={true}
-        onSubmit={(values, post) => {
+        onSubmit={values => {
           console.log(values);
           updatePost({
-            heading: values.heading,
-            description: values.description,
-            location: values.location,
+            heading: Heading,
+            description: Description,
+            location: Location,
           });
         }}>
         {props => (
@@ -59,21 +62,55 @@ export default function EditForm({route}) {
             <TextInput
               style={formikstyles.txtInput}
               placeholder={'Give your post a title'}
-              onChangeText={props.handleChange('heading')}
-              value={props.values.heading}
+              onChangeText={text => setHeading(text)}
+              value={Heading}
             />
             <TextInput
               style={formikstyles.txtInput}
               placeholder={'Tell us about your leftovers...'}
-              onChangeText={props.handleChange('description')}
-              value={props.values.description}
+              onChangeText={text => setDescription(text)}
+              value={Description}
             />
-            <TextInput
-              style={formikstyles.txtInput}
-              placeholder={'Where can we get our grub?'}
-              onChangeText={props.handleChange('location')}
-              value={props.values.location}
-            />
+            <Text style={{fontSize: 25}}>
+              Is your food still at {post.post.location} ?
+            </Text>
+            <Picker
+              style={{fontSize: 25}}
+              mode="dialog"
+              prompt="Change The Location"
+              selectedValue={Location}
+              onValueChange={itemValue => setLocation(itemValue)}>
+              <Picker.Item label="Harmer" value="Harmer" />
+              <Picker.Item label="Eric Mensforth" value="Eric Mensforth" />
+              <Picker.Item label="Sheaf" value="Sheaf" />
+              <Picker.Item label="Howard/Surrey" value="Howard/Surrey" />
+              <Picker.Item label="Adsetts" value="Adsetts" />
+              <Picker.Item label="Stoddart" value="Stoddart" />
+              <Picker.Item label="Cantor" value="Cantor" />
+              <Picker.Item label="Arundel" value="Arundel" />
+              <Picker.Item label="Oneleven" value="Oneleven" />
+              <Picker.Item label="Charles Street" value="Charles Street" />
+              <Picker.Item
+                label="Sheffield Institute of Arts"
+                value="Sheffield Institute of Arts"
+              />
+              <Picker.Item label="Collegiate Hall" value="Collegiate Hall" />
+              <Picker.Item
+                label="Saunders Building"
+                value="Saunders Building"
+              />
+              <Picker.Item label="Library" value="Library" />
+              <Picker.Item label="Main Building" value="Main Building" />
+              <Picker.Item
+                label="Robert Winston Building"
+                value="Robert Winston Building"
+              />
+              <Picker.Item label="Woodville" value="Woodville" />
+              <Picker.Item label="Heart of Campus" value="Heart of Campus" />
+              <Picker.Item label="The Mews" value="The Mews" />
+              <Picker.Item label="Willow Court" value="Willow Court" />
+              <Picker.Item label="Chestnut Court" value="Chestnut Court" />
+            </Picker>
             <TouchableOpacity
               style={formikstyles.button}
               title={'submit'}

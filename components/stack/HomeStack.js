@@ -18,24 +18,23 @@ const HomeStackScreen = () => (
       options={({route, navigation}) => {
         return {
           headerTitle: 'big APPetite',
+          // headerRight: () => (
+          //   <Button
+          //     title="Add"
+          //     onPress={() => {
+          //       navigation.navigate('New Post');
+          //     }}
+          //   />
+          // ),
           headerRight: () => (
             <Button
-              title="Add"
+              title="Favourites"
               onPress={() => {
-                navigation.navigate('New Post');
+                navigation.navigate('Favourites');
               }}
             />
           ),
-          headerLeft: () => (
-            <Button
-              // title="Favourites"
-              // onPress={() => {
-              //   navigation.navigate('Favourites');
-              // }}
-              title="Log Out"
-              onPress={logOut}
-            />
-          ),
+          headerLeft: () => <Button title="Log Out" onPress={logOut} />,
         };
       }}
     />
