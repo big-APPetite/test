@@ -3,34 +3,34 @@ import {View, FlatList} from 'react-native';
 import Firebase from 'firebase';
 import 'firebase/database';
 import 'firebase/auth';
-import {styles} from '../PostList';
-import Post from '../Post';
+import {styles} from './PostList';
+import Post from './Post';
 
-export default class Favourites extends Component {
+export default class UserPosts extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      favList: [],
+      userPostList: [],
     };
   }
 
-  getFavourites = () => {
+  getUserPosts = () => {
     const userKey = Firebase.auth().currentUser.uid;
-    const ref = Firebase.database().ref('favourites/' + userKey);
+    const ref = Firebase.database().ref('user_posts/' + userKey);
     ref.on('value', snapshot => {
-      console.log('Favourites retrieved!');
-      const favObject = snapshot.val();
-      if (!favObject) {
+      console.log('User posts retrieved!');
+      const postObject = snapshot.val();
+      if (!postObject) {
         return console.warn('No data from firebase');
       }
-      const favArray = Object.values(favObject);
-      this.setState({favList: favArray});
+      const postsArray = Object.values(postObject);
+      this.setState({userPostList: postsArray});
     });
   };
 
   componentDidMount() {
-    this.getFavourites();
+    this.getUserPosts();
   }
 
   render() {
@@ -38,15 +38,18 @@ export default class Favourites extends Component {
       <View style={styles.container}>
         <FlatList
           keyExtractor={post => post.heading}
-          data={this.state.favList}
+          data={this.state.userPostList}
           renderItem={({item: post}) => (
             <Post
               key={post.id}
               heading={post.heading}
               description={post.description}
               location={post.location}
-              createdBy={post.createdBy}
+              createdBy={' '}
               image={post.image && {uri: post.image}}
+              onPress={() =>
+                this.props.navigation.navigate('PostDetails', post)
+              }
             />
           )}
         />

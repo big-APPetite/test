@@ -2,11 +2,10 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import Posts from '../PostList';
 import AddForm from '../AddForm';
-import PostDetails from './PostDetails';
 import {Button} from 'react-native';
-import EditForm from '../EditForm';
 import Favourites from './FavouritesScreen';
 import {logOut} from '../api/UsersApi';
+import AccountScreen from './AccountScreen';
 
 const HomeStack = createStackNavigator();
 
@@ -28,38 +27,27 @@ const HomeStackScreen = () => (
           // ),
           headerRight: () => (
             <Button
-              title="Favourites"
+              title="Account"
               onPress={() => {
-                navigation.navigate('Favourites');
+                navigation.navigate('Account');
               }}
             />
           ),
+          // headerRight: () => (
+          //   <Button
+          //     title="Favourites"
+          //     onPress={() => {
+          //       navigation.navigate('Favourites');
+          //     }}
+          //   />
+          // ),
           headerLeft: () => <Button title="Log Out" onPress={logOut} />,
         };
       }}
     />
-    <HomeStack.Screen
-      name="PostDetails"
-      component={PostDetails}
-      options={({route, navigation}) => {
-        return {
-          headerTitle: route.params.heading,
-          headerRight: () => (
-            <Button
-              title="Edit"
-              onPress={() => {
-                navigation.navigate('Update Post', {
-                  post: route.params,
-                });
-              }}
-            />
-          ),
-        };
-      }}
-    />
     <HomeStack.Screen name="New Post" component={AddForm} />
-    <HomeStack.Screen name="Update Post" component={EditForm} />
     <HomeStack.Screen name="Favourites" component={Favourites} />
+    <HomeStack.Screen name="Account" component={AccountScreen} />
   </HomeStack.Navigator>
 );
 

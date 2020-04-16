@@ -2,7 +2,6 @@ import React from 'react';
 import {Text, View, StyleSheet, Button, Alert} from 'react-native';
 import Firebase from 'firebase';
 import 'firebase/database';
-import FavouriteButton from '../buttons/FavouriteButton';
 
 export default ({route}) => {
   const postInfo = route.params;
@@ -17,21 +16,6 @@ export default ({route}) => {
     });
   }
 
-  function favourite() {
-    const userKey = Firebase.auth().currentUser.uid;
-    const favRef = Firebase.database().ref(
-      'favourites/' + userKey + '/' + postKey,
-    );
-    favRef.set({
-      id: postKey,
-      heading: postInfo.heading,
-      description: postInfo.description,
-      location: postInfo.location,
-      createdAt: postInfo.createdAt,
-      createdBy: postInfo.createdBy,
-    });
-  }
-
   return (
     <View>
       {/*<Text>{JSON.stringify(postInfo, null, 2)}</Text>*/}
@@ -40,9 +24,6 @@ export default ({route}) => {
       <Text style={{fontSize: 25, textAlign: 'center'}}>
         {postInfo.description}
       </Text>
-      <View style={{flexDirection: 'row-reverse', padding: 10}}>
-        <Button title="Favourite" onPress={favourite} />
-      </View>
       <Button
         title="Delete"
         onPress={() => {

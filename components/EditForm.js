@@ -15,12 +15,11 @@ import 'firebase/database';
 export default function EditForm({route}) {
   const post = route.params;
   const postKey = post.post.id;
-  console.log(post);
-  console.log(postKey);
   const ref = Firebase.database().ref('posts/' + postKey);
   const [Heading, setHeading] = useState(post.post.heading);
   const [Description, setDescription] = useState(post.post.description);
   const [Location, setLocation] = useState(post.post.location);
+  const userKey = Firebase.auth().currentUser.uid;
 
   function updatePost(values) {
     ref
@@ -28,6 +27,15 @@ export default function EditForm({route}) {
         heading: values.heading,
         description: values.description,
         location: values.location,
+      })
+      .then(() => {
+        Firebase.database()
+          .ref('user_posts/' + userKey + '/' + postKey)
+          .update({
+            heading: values.heading,
+            description: values.description,
+            location: values.location,
+          });
       })
       .then(snapshot => {
         values.id = snapshot.id;

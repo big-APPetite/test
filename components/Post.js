@@ -1,9 +1,24 @@
 import React from 'react';
-import {Image, Text, StyleSheet, View, TouchableOpacity} from 'react-native';
+import {
+  Image,
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import FavouriteButton from './buttons/FavouriteButton';
 import chickenClub from './images/chickenSandwich.jpg';
 
-const Post = ({heading, description, location, createdBy, image, onPress}) => (
+const Post = ({
+  heading,
+  description,
+  location,
+  createdBy,
+  image,
+  onPress,
+  favourite,
+}) => (
   <TouchableOpacity style={postStyle.container} onPress={onPress}>
     <View style={(postStyle.container, {alignItems: 'flex-start'})}>
       <View style={postStyle.padding}>
@@ -22,6 +37,9 @@ const Post = ({heading, description, location, createdBy, image, onPress}) => (
           backgroundColor: '#2bb76e',
         }}>
         <Text style={postStyle.paragraph}>{description}</Text>
+        <View>
+          <Button title="Favourite" onPress={favourite} />
+        </View>
       </View>
     </View>
   </TouchableOpacity>

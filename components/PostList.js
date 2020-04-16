@@ -53,15 +53,27 @@ export default class Posts extends Component {
           data={this.state.postList}
           renderItem={({item: post}) => (
             <Post
-              key={post.heading}
+              key={post.id}
               heading={post.heading}
               description={post.description}
               location={post.location}
               createdBy={post.createdBy}
               image={post.image && {uri: post.image}}
-              onPress={() =>
-                this.props.navigation.navigate('PostDetails', post)
-              }
+              favourite={() => {
+                const userKey = Firebase.auth().currentUser.uid;
+                const postKey = post.id;
+                const favRef = Firebase.database().ref(
+                  'favourites/' + userKey + '/' + postKey,
+                );
+                favRef.set({
+                  id: postKey,
+                  heading: post.heading,
+                  description: post.description,
+                  location: post.location,
+                  createdAt: post.createdAt,
+                  createdBy: post.createdBy,
+                });
+              }}
             />
           )}
         />

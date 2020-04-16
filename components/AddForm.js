@@ -41,6 +41,18 @@ export default function AddForm() {
         createdBy: Username,
         // imageUri: this.state.fileUri,
       })
+      .then(() => {
+        Firebase.database()
+          .ref('user_posts/' + userKey + '/' + key)
+          .set({
+            id: key,
+            heading: values.heading,
+            description: values.description,
+            location: values.location,
+            createdAt: Date(Date.now()),
+            createdBy: Username,
+          });
+      })
       .then(snapshot => {
         values.Id = snapshot.Id;
         snapshot.set(values);
