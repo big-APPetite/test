@@ -63,4 +63,8 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: '#2B2EB7',
     paddingVertical: 10,
   },
+  buttonAddPicture: {
+    backgroundColor: '#2B2EB7',
+    paddingVertical: 10,
+  },
 });
