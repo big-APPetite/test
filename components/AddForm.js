@@ -12,7 +12,6 @@ import {Formik} from 'formik';
 import {styles} from './PostList';
 import PostImage from './ImagePicker';
 import Firebase from 'firebase';
-import ImageSian from './ImageSian';
 
 export default function AddForm() {
   const [selectedValue, setSelectedValue] = useState('');
@@ -87,8 +86,7 @@ export default function AddForm() {
         }}>
         {props => (
           <ScrollView>
-            <ImageSian />
-            {/* <PostImage /> */}
+            <PostImage />
             <TextInput
               style={formikstyles.txtInput}
               placeholder={'Give your post a title'}

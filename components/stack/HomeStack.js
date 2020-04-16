@@ -17,22 +17,22 @@ const HomeStackScreen = () => (
       options={({route, navigation}) => {
         return {
           headerTitle: 'big APPetite',
-          headerRight: () => (
-            <Button
-              title="Add"
-              onPress={() => {
-                navigation.navigate('New Post');
-              }}
-            />
-          ),
           // headerRight: () => (
           //   <Button
-          //     title="Account"
+          //     title="Add"
           //     onPress={() => {
-          //       navigation.navigate('Account');
+          //       navigation.navigate('New Post');
           //     }}
           //   />
           // ),
+          headerRight: () => (
+            <Button
+              title="Account"
+              onPress={() => {
+                navigation.navigate('Account');
+              }}
+            />
+          ),
           // headerRight: () => (
           //   <Button
           //     title="Favourites"
