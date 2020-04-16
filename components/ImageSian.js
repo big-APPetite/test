@@ -31,8 +31,6 @@ export default class ImageSian extends React.Component {
         console.log('ImagePicker Error: ', response.error);
       } else {
         let source = response;
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
         this.setState({
           filePath: source,
         });
@@ -42,17 +40,16 @@ export default class ImageSian extends React.Component {
 
   render() {
     return (
-      <View style={globalStyles.container}>
         <View style={globalStyles.container}>
+            <Button onPress={this.chooseFile.bind(this)} title="Add Picture"/>
                 <Image
                     source={{ uri: this.state.filePath.uri }}
                     style={styles.image}
                 />
-             <TouchableOpacity style={globalStyles.buttonAddPicture} onPress={this.chooseFile.bind(this)}>
-                <Text style={globalStyles.buttonText}>Add Picture</Text>
-            </TouchableOpacity>
+                <Text style={{ alignItems: 'center' }}>
+                    {this.state.filePath.uri}
+                </Text>
         </View>
-      </View>
     );
   }
 }

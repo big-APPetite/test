@@ -15,9 +15,11 @@ import Firebase from 'firebase';
 import ImageSian from './ImageSian';
 
 export default function AddForm() {
+
   const [selectedValue, setSelectedValue] = useState('');
   const [Username, setUsername] = useState('');
   const userKey = Firebase.auth().currentUser.uid;
+
   Firebase.database()
     .ref('users/' + userKey)
     .on('value', snapshot => {
@@ -27,6 +29,7 @@ export default function AddForm() {
       console.log(user);
       console.log(userName);
     });
+
   function addPost(values, addComplete) {
     const key = Firebase.database()
       .ref('posts')
@@ -61,6 +64,7 @@ export default function AddForm() {
       .then(() => addComplete(values))
       .catch(error => console.log(error));
   }
+
   return (
     <View style={styles.container}>
       <Formik
@@ -87,7 +91,6 @@ export default function AddForm() {
         }}>
         {props => (
           <ScrollView>
-            <ImageSian />
             {/* <PostImage /> */}
             <TextInput
               style={formikstyles.txtInput}
@@ -139,6 +142,7 @@ export default function AddForm() {
               <Picker.Item label="Willow Court" value="Willow Court" />
               <Picker.Item label="Chestnut Court" value="Chestnut Court" />
             </Picker>
+           <ImageSian />
             <TouchableOpacity
               style={formikstyles.button}
               title={'submit'}
