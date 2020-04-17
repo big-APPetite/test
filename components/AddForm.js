@@ -44,7 +44,8 @@ const selectImage = () => {
   })
 }
 
-  Firebase.database()
+  function getUsername() {
+    return Firebase.database()
     .ref('users/' + userKey)
     .on('value', snapshot => {
       const user = snapshot.val();
@@ -52,7 +53,7 @@ const selectImage = () => {
       setUsername(userName);
       console.log(user);
       console.log(userName);
-    });
+    })};
 
   function addPost(values, addComplete) {
     const key = Firebase.database()

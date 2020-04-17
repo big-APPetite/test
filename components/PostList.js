@@ -58,6 +58,7 @@ export default class Posts extends Component {
               description={post.description}
               location={post.location}
               createdBy={post.createdBy}
+              uri={{uri: post.uri}}
               //image={post.image && {uri: post.image.uri}}
               favourite={() => {
                 const userKey = Firebase.auth().currentUser.uid;
