@@ -17,8 +17,6 @@ import Firebase from 'firebase';
 import ImagePicker from 'react-native-image-picker'
 
 
-
-
 export default function AddForm() {
 
   
@@ -39,7 +37,7 @@ const selectImage = () => {
     } else if (response.customButton) {
       console.log('User tapped custom button: ', response.customButton)
     } else {
-      const source = {uri: response.uri}
+      const source = (response.uri)
       console.log(source)
       setUri(source)
     }
@@ -69,7 +67,7 @@ const selectImage = () => {
         location: values.location,
         createdAt: Date(Date.now()),
         createdBy: Username,
-        Uri: Uri
+        uri: Uri
       })
       .then(() => {
         Firebase.database()
@@ -100,6 +98,7 @@ const selectImage = () => {
           description: '',
           location: '',
           createdBy: '',
+          uri: '' ,
         }}
         onSubmit={values => {
           console.log(values);
