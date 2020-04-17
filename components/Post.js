@@ -22,7 +22,7 @@ const Post = ({
   <TouchableOpacity style={postStyle.container} onPress={onPress}>
     <View style={(postStyle.container, {alignItems: 'flex-start'})}>
       <View style={postStyle.padding}>
-        <Image style={postStyle.image} source={image} />
+        <Image style={postStyle.image} source={{uri: image}} />
         <View style={{backgroundColor: (255, 255, 255, 45), borderRadius: 6}}>
           <Text style={postStyle.text}>{heading}</Text>
           <Text style={postStyle.text}>{location}</Text>

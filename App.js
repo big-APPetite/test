@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import HomeStackScreen from './components/stack/HomeStack';
 import AuthNavigator from './components/stack/authNavigator';
 
+
 const App: () => React$Node = () => {
   return (
     // <NavigationContainer>
