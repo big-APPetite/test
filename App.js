@@ -7,6 +7,7 @@ import AuthNavigator from './components/stack/authNavigator';
 
 const App: () => React$Node = () => {
   return (
+    
     // <NavigationContainer>
     //   <HomeStackScreen />
     // </NavigationContainer>

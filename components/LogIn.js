@@ -62,7 +62,7 @@ const validationSchema = yup.object().shape({
     .required(),
 });
 
-function signIn(values) {
+async function signIn(values) {
   Firebase.auth()
     .signInWithEmailAndPassword(values.email, values.password)
     .catch(function(error) {

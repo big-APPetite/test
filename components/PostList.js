@@ -23,7 +23,7 @@ export default class Posts extends Component {
     this.getPostData();
   }
 
-  getPostData = () => {
+  getPostData = async () => {
     const ref = Firebase.database().ref('/posts');
     ref.on('value', snapshot => {
       console.log('DATA RETRIEVED');

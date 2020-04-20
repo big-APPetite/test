@@ -6,6 +6,7 @@ import LogOutStack from './logOutStack';
 export const AuthContext = createContext(null);
 
 export default function AuthNavigator() {
+  
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState(null);
 

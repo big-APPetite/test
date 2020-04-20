@@ -18,7 +18,6 @@ import ImagePicker from 'react-native-image-picker'
 
 
 export default function AddForm() {
-
   
 const [selectedValue, setSelectedValue] = useState('');
 const [Username, setUsername] = useState('');
@@ -44,7 +43,7 @@ const selectImage = () => {
   })
 }
 
-  function getUsername() {
+function getUsernameFromFirebase() {
     return Firebase.database()
     .ref('users/' + userKey)
     .on('value', snapshot => {
@@ -54,6 +53,8 @@ const selectImage = () => {
       console.log(user);
       console.log(userName);
     })};
+
+  
 
   function addPost(values, addComplete) {
     const key = Firebase.database()
@@ -91,6 +92,16 @@ const selectImage = () => {
       .catch(error => console.log(error));
   }
 
+  function renderFileUri() {
+    if (Uri === '') {
+      return  <Image source={require('./images/gallery.png')} style={{width: '100%', height: 300}} />
+    } else {
+      return (
+        <Image style ={{width: '100%', height: 300}} source={{uri: Uri}} />
+      );
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Formik
@@ -99,12 +110,13 @@ const selectImage = () => {
           description: '',
           location: '',
           createdBy: '',
-          uri: '' ,
+          uri: '',
         }}
         onSubmit={values => {
           console.log(values);
+          getUsernameFromFirebase();
           console.log(Username);
-          console.log(Uri)
+          //console.log(Uri)
           addPost({
             heading: values.heading,
             description: values.description,
@@ -170,9 +182,10 @@ const selectImage = () => {
               <Picker.Item label="Chestnut Court" value="Chestnut Court" />
             </Picker>
 
+        
             <Button title="Add image" onPress={selectImage}/>
-
-            <Image source={Uri} style ={{width: '100%', height: 300}}/>
+            {renderFileUri()}
+           
 
             <TouchableOpacity
               style={formikstyles.button}
