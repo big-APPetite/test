@@ -3,6 +3,7 @@ import Firebase from 'firebase';
 import LogInStack from './logInStack';
 import LogOutStack from './logOutStack';
 
+
 export const AuthContext = createContext(null);
 
 export default function AuthNavigator() {
