@@ -6,6 +6,7 @@ import {Button} from 'react-native';
 import Favourites from './FavouritesScreen';
 import {logOut} from '../api/UsersApi';
 import AccountScreen from './AccountScreen';
+import ChangeUsername from '../ChangeUsername';
 
 const HomeStack = createStackNavigator();
 
@@ -27,12 +28,20 @@ const HomeStackScreen = () => (
           // ),
           headerRight: () => (
             <Button
-              title="Account"
+              title="Username"
               onPress={() => {
-                navigation.navigate('Account');
+                navigation.navigate('Change Username');
               }}
             />
           ),
+          // headerRight: () => (
+          //   <Button
+          //     title="Account"
+          //     onPress={() => {
+          //       navigation.navigate('Account');
+          //     }}
+          //   />
+          // ),
           // headerRight: () => (
           //   <Button
           //     title="Favourites"
@@ -48,6 +57,7 @@ const HomeStackScreen = () => (
     <HomeStack.Screen name="New Post" component={AddForm} />
     <HomeStack.Screen name="Favourites" component={Favourites} />
     <HomeStack.Screen name="Account" component={AccountScreen} />
+    <HomeStack.Screen name="Change Username" component={ChangeUsername} />
   </HomeStack.Navigator>
 );
 

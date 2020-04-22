@@ -7,16 +7,41 @@ import {
   ScrollView,
   TouchableOpacity,
   Picker,
+  Button,
+  Image,
 } from 'react-native';
 import {Formik} from 'formik';
 import {styles} from './PostList';
 import PostImage from './ImagePicker';
 import Firebase from 'firebase';
+import ImagePicker from 'react-native-image-picker';
 
 export default function AddForm() {
   const [selectedValue, setSelectedValue] = useState('');
   const [Username, setUsername] = useState('');
   const userKey = Firebase.auth().currentUser.uid;
+  const [Uri, setUri] = useState('');
+
+  const selectImage = () => {
+    const options = {
+      noData: true,
+    };
+
+    ImagePicker.launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      } else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      } else {
+        const source = response.uri;
+        console.log(source);
+        setUri(source);
+      }
+    });
+  };
+
   Firebase.database()
     .ref('users/' + userKey)
     .on('value', snapshot => {
@@ -26,6 +51,19 @@ export default function AddForm() {
       console.log(user);
       console.log(userName);
     });
+
+  function renderFileUri() {
+    if ({Uri}) {
+      return <Image source={{uri: Uri}} style={formikstyles.images} />;
+    } else {
+      return (
+        <Image
+          source={require('./images/gallery.png')}
+          style={formikstyles.images}
+        />
+      );
+    }
+  }
   function addPost(values, addComplete) {
     const key = Firebase.database()
       .ref('posts')
@@ -39,7 +77,7 @@ export default function AddForm() {
         location: values.location,
         createdAt: Date(Date.now()),
         createdBy: Username,
-        // imageUri: this.state.fileUri,
+        uri: Uri,
       })
       .then(() => {
         Firebase.database()
@@ -51,6 +89,7 @@ export default function AddForm() {
             location: values.location,
             createdAt: Date(Date.now()),
             createdBy: Username,
+            uri: Uri,
           });
       })
       .then(snapshot => {
@@ -67,8 +106,7 @@ export default function AddForm() {
           heading: '',
           description: '',
           location: '',
-          image: null,
-          imageUri: '',
+          uri: '',
           createdBy: '',
         }}
         onSubmit={values => {
@@ -79,6 +117,7 @@ export default function AddForm() {
             description: values.description,
             location: selectedValue,
             createdBy: Username,
+            uri: Uri,
           });
           // uploadPhoto({
           //   image: values.image,
@@ -86,7 +125,7 @@ export default function AddForm() {
         }}>
         {props => (
           <ScrollView>
-            <PostImage />
+            {/*<PostImage />*/}
             <TextInput
               style={formikstyles.txtInput}
               placeholder={'Give your post a title'}
@@ -137,6 +176,10 @@ export default function AddForm() {
               <Picker.Item label="Willow Court" value="Willow Court" />
               <Picker.Item label="Chestnut Court" value="Chestnut Court" />
             </Picker>
+            <Button title="Add image" onPress={selectImage} />
+
+            {/*<Image source={Uri} style={{width: '100%', height: 300}} />*/}
+            <View>{renderFileUri()}</View>
             <TouchableOpacity
               style={formikstyles.button}
               title={'submit'}
@@ -189,5 +232,12 @@ const formikstyles = StyleSheet.create({
   },
   imageButton: {
     margin: 8,
+  },
+  images: {
+    width: 150,
+    height: 150,
+    borderColor: 'black',
+    borderWidth: 1,
+    marginHorizontal: 3,
   },
 });

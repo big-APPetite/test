@@ -4,6 +4,7 @@ import 'firebase/database';
 import 'firebase/storage';
 import 'firebase/auth';
 import React from 'react';
+import {Image} from 'react-native';
 
 function getUsername() {
   const userKey = Firebase.auth().currentUser.uid;
